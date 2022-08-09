@@ -19,6 +19,7 @@ import Snackbar from "@mui/material/Snackbar";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import MuiAlert from "@mui/material/Alert";
+import swal from "sweetalert";
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -44,10 +45,12 @@ function Copyright(props) {
 
 const theme = createTheme();
 
-export default function SignInSide() {
+export default function CreateGroup() {
   // STATES
   let navigate = useNavigate();
   const [loading, setLoading] = React.useState(false);
+  const [success, setOpenSuccess] = React.useState(false);
+
   const [open, setOpen] = React.useState(false);
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
@@ -63,6 +66,7 @@ export default function SignInSide() {
     //     UNDO
     //   </Button>
     //   <IconButton
+
     //     size="small"
     //     aria-label="close"
     //     color="inherit"
@@ -72,26 +76,36 @@ export default function SignInSide() {
     //   </IconButton>
     // </React.Fragment>
     <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
-      <Alert onClose={handleClose} severity="error" sx={{ width: "100%" }}>
-        You provided the wrong login credentials!!
+      <Alert onClose={handleClose} severity="success" sx={{ width: "100%" }}>
+        success
       </Alert>
     </Snackbar>
   );
+
+  <Snackbar open={success} autoHideDuration={6000} onClose={handleClose}>
+  <Alert onClose={handleClose} severity="error" sx={{ width: "100%" }}>
+    An error occured while trying to create a group!
+  </Alert>
+</Snackbar>
 
   // END OF STATES
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
+    // console.log({
+    //   email: data.get("email"),
+    //   password: data.get("password"),
+    // });
     setLoading(true);
-    axios
-      .post("http://localhost:3000/api/v1/Auth/login", {
-        password: data.get("password"),
+    if( data.get("groupName") == "" ||  data.get("Admin") == "" ||  data.get("groupDescription") == ""){
+      swal("Group Creation Failed!", "Kindly Provide accurate information regarding the chama", "error");
 
-        email: data.get("email"),
+    }else{
+      axios
+      .post("http://localhost:3000/api/v1/group/create", {
+        groupName: data.get("groupName"),
+        Admin: data.get("Admin"),
+        groupDescription: data.get("groupDescription"),
       })
       .then((res) => {
         setLoading(false);
@@ -99,40 +113,24 @@ export default function SignInSide() {
         if (res.data.responseStatusCode == "401") {
           setOpen(true);
         } else {
+          swal("Group Creation Success!", "A group/chama with the provided details is created successfully and now available to start receiving join requests", "success");
           navigate("/dashboard");
+          // setTimeout(()=>{
+          // navigate("/dashboard");
+
+          // }, 2000);
         }
       })
       .catch((err) => {
         setLoading(false);
+      swal("Group Creation Failed!", "Kindly Provide accurate information regarding the chama", "error");
+
         console.log(err);
       });
+    }
+ 
   };
 
-  // if (loading) {
-  //   return (
-  //     <div
-  //       style={{
-  //         height: "100vh",
-  //         width: "100vw",
-  //         justifyContent: "center",
-  //         alignItems: "center",
-  //       }}
-  //     >
-  //       <img
-  //         src={logo}
-  //         style={{
-  //           height: 100,
-  //           justifySelf: "center",
-  //           alignSelf: "center",
-  //           marginTop: 200,
-  //           width: 100,
-  //         }}
-  //         alt="loading..."
-  //       />
-  //       <h2 style={{ color: "blue" }}>We are verifying your credentials...</h2>
-  //     </div>
-  //   );
-  // }
 
   return (
     <ThemeProvider theme={theme}>
@@ -169,10 +167,10 @@ export default function SignInSide() {
               <LockOutlinedIcon />
             </Avatar>
             <Typography component="h1" variant="h5">
-              CHAMACHETU FOUNDATION
+              CREATE A NEW GROUP (CHAMA)
             </Typography>
             <Typography component="h1" variant="h5">
-              Sign in
+              Kindly provide the following details correctly.
             </Typography>
             <Box
               component="form"
@@ -184,33 +182,43 @@ export default function SignInSide() {
                 margin="normal"
                 required
                 fullWidth
-                id="email"
-                label="Email Address"
-                name="email"
-                autoComplete="email"
+                id="groupName"
+                label="Group Name"
+                name="groupName"
+                autoComplete="groupName"
                 autoFocus
               />
-              <TextField
+                     <TextField
                 margin="normal"
                 required
                 fullWidth
-                name="password"
-                label="Password"
-                type="password"
-                id="password"
-                autoComplete="current-password"
+                id="Admin"
+                label="Administrator's Email"
+                name="Admin"
+                autoComplete="Admin"
+                autoFocus
               />
-              <FormControlLabel
-                control={<Checkbox value="remember" color="primary" />}
-                label="Remember me"
+                     <TextField
+                margin="normal"
+                required
+                fullWidth
+                id="groupDescription"
+                label="Group Description"
+                name="groupDescription"
+                autoComplete="groupDescription"
+                autoFocus
               />
+              
+         
+          
               <Button
                 type="submit"
                 fullWidth
+                
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
               >
-                {loading ? "Signing you in please wait..." : "sign in"}
+                {loading ? "creating group..." : "Create New Group"}
               </Button>
               <Snackbar
                 open={open}
@@ -219,18 +227,9 @@ export default function SignInSide() {
                 message="Note archived"
                 action={action}
               />
-              <Grid container>
-                <Grid item xs>
-                  <Link href="#" variant="body2">
-                    Forgot password?
-                  </Link>
-                </Grid>
-                <Grid item>
-                  <Link href="/signup" variant="body2">
-                    {"Don't have an account? Sign Up"}
-                  </Link>
-                </Grid>
-              </Grid>
+              
+             
+            
               <Copyright sx={{ mt: 5 }} />
             </Box>
           </Box>

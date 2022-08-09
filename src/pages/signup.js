@@ -15,10 +15,10 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import logo from "../Assets/loadingicon.gif";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import Snackbar from "@mui/material/Snackbar";
-import IconButton from "@mui/material/IconButton";
-import CloseIcon from "@mui/icons-material/Close";
-import MuiAlert from "@mui/material/Alert";
+import Snackbar from '@mui/material/Snackbar';
+import IconButton from '@mui/material/IconButton';
+import CloseIcon from '@mui/icons-material/Close';
+import MuiAlert from '@mui/material/Alert';
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -44,13 +44,13 @@ function Copyright(props) {
 
 const theme = createTheme();
 
-export default function SignInSide() {
+export default function Sign_up() {
   // STATES
   let navigate = useNavigate();
   const [loading, setLoading] = React.useState(false);
   const [open, setOpen] = React.useState(false);
   const handleClose = (event, reason) => {
-    if (reason === "clickaway") {
+    if (reason === 'clickaway') {
       return;
     }
 
@@ -72,11 +72,13 @@ export default function SignInSide() {
     //   </IconButton>
     // </React.Fragment>
     <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
-      <Alert onClose={handleClose} severity="error" sx={{ width: "100%" }}>
-        You provided the wrong login credentials!!
-      </Alert>
-    </Snackbar>
+    <Alert onClose={handleClose} severity="error" sx={{ width: '100%' }}>
+      We encountered a problem while creating an account for you!!
+    </Alert>
+  </Snackbar>
   );
+
+
 
   // END OF STATES
   const handleSubmit = (event) => {
@@ -84,15 +86,20 @@ export default function SignInSide() {
     const data = new FormData(event.currentTarget);
     console.log({
       email: data.get("email"),
+      phone:data.get("Phone"),
       password: data.get("password"),
     });
     setLoading(true);
     axios
-      .post("http://localhost:3000/api/v1/Auth/login", {
-        password: data.get("password"),
-
-        email: data.get("email"),
-      })
+      .post("http://localhost:3000/api/v1/Auth/register", 
+      {
+        "password":data.get("password"),
+        "username":data.get("username"),
+        "email":data.get("email"),
+        "phone":data.get("Phone")
+    
+    }
+      )
       .then((res) => {
         setLoading(false);
         console.log(res.data);
@@ -145,7 +152,7 @@ export default function SignInSide() {
           md={7}
           sx={{
             backgroundImage:
-              "url(https://images.unsplash.com/photo-1509099342178-e323b1717dba?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=872&q=80)",
+              "url(https://images.unsplash.com/photo-1515658323406-25d61c141a6e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=409&q=80)",
             backgroundRepeat: "no-repeat",
             backgroundColor: (t) =>
               t.palette.mode === "light"
@@ -172,7 +179,7 @@ export default function SignInSide() {
               CHAMACHETU FOUNDATION
             </Typography>
             <Typography component="h1" variant="h5">
-              Sign in
+              Create an account
             </Typography>
             <Box
               component="form"
@@ -190,6 +197,27 @@ export default function SignInSide() {
                 autoComplete="email"
                 autoFocus
               />
+                     <TextField
+                margin="normal"
+                required
+                fullWidth
+                id="email"
+                label="Username"
+                name="username"
+                autoComplete="username"
+                autoFocus
+              />
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                name="Phone"
+                label="Phone"
+                // type="password"
+                id="Phone"
+                autoComplete="Phone"
+              />
+              
               <TextField
                 margin="normal"
                 required
@@ -200,34 +228,32 @@ export default function SignInSide() {
                 id="password"
                 autoComplete="current-password"
               />
-              <FormControlLabel
-                control={<Checkbox value="remember" color="primary" />}
-                label="Remember me"
-              />
+
+
+              
+         
               <Button
                 type="submit"
                 fullWidth
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
               >
-                {loading ? "Signing you in please wait..." : "sign in"}
+                {loading ? "please wait while we create your account..." : "create an account"}
               </Button>
               <Snackbar
-                open={open}
-                autoHideDuration={6000}
-                onClose={handleClose}
-                message="Note archived"
-                action={action}
-              />
+  open={open}
+  autoHideDuration={6000}
+  onClose={handleClose}
+  message="Note archived"
+  action={action}
+/>
               <Grid container>
                 <Grid item xs>
-                  <Link href="#" variant="body2">
-                    Forgot password?
-                  </Link>
+               
                 </Grid>
                 <Grid item>
-                  <Link href="/signup" variant="body2">
-                    {"Don't have an account? Sign Up"}
+                  <Link href="/login" variant="body2">
+                    {" have an account? Log in here"}
                   </Link>
                 </Grid>
               </Grid>
