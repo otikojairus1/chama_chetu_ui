@@ -12,17 +12,14 @@ import AppBarComponent from "../components/Appbar";
 import { ClipLoader, GridLoader } from "react-spinners";
 import axios from "axios";
 import swal from "sweetalert";
-import { useNavigate } from "react-router-dom";
 
-export default function GroupList() {
+export default function GroupRequests() {
   let dataArray = [];
   const [loading, setLoading] = React.useState(false);
   const [data, setData] = React.useState([]);
-  let navigate = useNavigate();
-
   React.useEffect(() => {
     axios
-      .get("http://localhost:3000/api/v1/group/get/groups")
+      .get("http://localhost:3000/api/v1/group/view/membership/request")
       .then((response) => {
         // console.log(response.data);
         dataArray = response.data.data;
@@ -66,7 +63,7 @@ export default function GroupList() {
       <AppBarComponent />
 
       <Container maxWidth="sm">
-        <div style={{ fontSize: 30, marginLeft: "auto" }}>Top Group</div>
+        <div style={{ fontSize: 30, marginLeft: "auto" }}>Group Requests</div>
 
         {data.map((groupDetails) => {
           return (
@@ -83,29 +80,29 @@ export default function GroupList() {
               }}
             >
               <div style={{}}>{groupDetails.groupName}</div>
-              <div style={{}}>{groupDetails.groupDescription}</div>
+              
 
               <div style={{}}>GROUP REG NO. {groupDetails._id}</div>
-              <div style={{}}>GROUP ADMIN: {groupDetails.Admin}</div>
+              <div style={{}}>MEMBER EMAIL: {groupDetails.user_email}</div>
               <div style={{}}>
-                GROUP INITIALIZED AT: {groupDetails.createdAt}
+                REQUESTED AT: {groupDetails.createdAt}
               </div>
 
               <div
                 onClick={() => {
                   axios
                     .post(
-                      "http://localhost:3000/api/v1/group/membership/request",
+                      "http://localhost:3000/api/v1/group/accept/membership/request",
                       {
-                        user_email: "otikojairus@yahoo.com",
-                        groupName: groupDetails.groupName,
+          
+                        "request_id":groupDetails._id
                       }
                     )
                     .then((res) => {
                       console.log(res.data);
                       swal(
-                        "Group joining request sent!",
-                        "Group joining request was successfully received. We will review that and respond immediately",
+                        "Group membership accepted!",
+                        "Group membership request accepted successfully, Member can now contribute in the group",
                         "success"
                       );
                     })
@@ -132,28 +129,7 @@ export default function GroupList() {
                 }}
               >
                 <p style={{ color: "#fff", marginTop: 10, marginLeft: 30 }}>
-                  Join Group
-                </p>
-              </div>
-              <div
-                onClick={() => {
-                  navigate("/group/members");
-                }}
-                style={{
-                  height: 50,
-                  justifyContent: "center",
-                  cursor: "pointer",
-                  alignItems: "center",
-                  borderBottomLeftRadius: 10,
-                  width: 100,
-                  position: "absolute",
-                  right: 120,
-                  bottom: 0,
-                  backgroundColor: "orange",
-                }}
-              >
-                <p style={{ color: "#fff", marginTop: 10, marginLeft: 30 }}>
-                  View Members
+                  Accept Request 
                 </p>
               </div>
             </div>

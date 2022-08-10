@@ -124,7 +124,13 @@ const AppBarComponent = () => {
               <Link to="/grouplist" style={{ textDecoration: 'none', color:"#fff" }}>
                 <Typography textAlign="center">GroupList</Typography>
               </Link>
+           
             </MenuItem>
+
+
+            <Link to="/group/requests" style={{ marginLeft:10, textDecoration: 'none', color:"#fff" }}>
+                <p style={{marginLeft:20}}>Requests</p>
+              </Link>
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>

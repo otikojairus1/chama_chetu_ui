@@ -14,6 +14,9 @@ import {
 } from "react-router-dom";
 import Sign_up from "./pages/signup";
 import GroupList from "./pages/GroupList";
+import GroupRequests from "./pages/GroupRequests";
+import GroupMembers from "./pages/GroupMembers";
+
 
 function App() {
   return (
@@ -24,6 +27,12 @@ function App() {
         <Route path="/signup" element={<Sign_up />} />
         <Route path="/create/group" element={<CreateGroup />} />
         <Route path="/grouplist" element={<GroupList />} />
+        <Route path="/group/requests" element={<GroupRequests />} />
+        <Route path="/group/members" element={<GroupMembers />} />
+
+
+
+        
 
         
 
