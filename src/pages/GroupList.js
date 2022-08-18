@@ -93,6 +93,7 @@ export default function GroupList() {
 
               <div
                 onClick={() => {
+                  setLoading(true);
                   axios
                     .post(
                       "http://localhost:3000/api/v1/group/membership/request",
@@ -103,11 +104,15 @@ export default function GroupList() {
                     )
                     .then((res) => {
                       console.log(res.data);
+
                       swal(
                         "Group joining request sent!",
                         "Group joining request was successfully received. We will review that and respond immediately",
                         "success"
                       );
+                      setTimeout(()=>{
+                        setLoading(false);
+                      }, 2000)
                     })
                     .catch((err) => {
                       console.log(err);

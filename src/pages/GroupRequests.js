@@ -17,7 +17,13 @@ export default function GroupRequests() {
   let dataArray = [];
   const [loading, setLoading] = React.useState(false);
   const [data, setData] = React.useState([]);
+  const [dataContent, setDataContent] = React.useState(false);
+let render ;
+if(data.length == 0){
+  render = <p>There are no requests at the moment!</p>
+}
   React.useEffect(() => {
+    setLoading(true);
     axios
       .get("http://localhost:3000/api/v1/group/view/membership/request")
       .then((response) => {
@@ -25,6 +31,11 @@ export default function GroupRequests() {
         dataArray = response.data.data;
         console.log(dataArray);
         setData(dataArray);
+        setDataContent(true);
+        setTimeout(()=>{
+          setLoading(false);
+
+        }, 2000);
       });
   }, []);
   const override = {
@@ -52,7 +63,7 @@ export default function GroupRequests() {
             size={30}
           />
           <div style={{ marginLeft: 420, fontSize: 25 }}>
-            Please wait as we fetch the latest groups
+            Please wait as we fetch the latest groups requests
           </div>
         </div>
       </div>
@@ -64,6 +75,8 @@ export default function GroupRequests() {
 
       <Container maxWidth="sm">
         <div style={{ fontSize: 30, marginLeft: "auto" }}>Group Requests</div>
+
+{render}
 
         {data.map((groupDetails) => {
           return (
