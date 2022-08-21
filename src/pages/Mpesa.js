@@ -19,6 +19,7 @@ import Snackbar from "@mui/material/Snackbar";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import MuiAlert from "@mui/material/Alert";
+import swal from "sweetalert";
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -44,7 +45,15 @@ function Copyright(props) {
 
 const theme = createTheme();
 
-export default function SignInSide() {
+export default function Mpesa() {
+  function updatedb(amount) {
+    axios.post("http://localhost:3000/api/v1/group/update/wallet").then(() => {
+      navigate("/dashboard", {
+        _id: "6300af4d041fe5be8bfb07e8",
+        amount: amount,
+      });
+    });
+  }
   // STATES
   let navigate = useNavigate();
   const [loading, setLoading] = React.useState(false);
@@ -58,19 +67,6 @@ export default function SignInSide() {
   };
 
   const action = (
-    // <React.Fragment>
-    //   <Button color="secondary" size="small" onClick={handleClose}>
-    //     UNDO
-    //   </Button>
-    //   <IconButton
-    //     size="small"
-    //     aria-label="close"
-    //     color="inherit"
-    //     onClick={handleClose}
-    //   >
-    //     <CloseIcon fontSize="small" />
-    //   </IconButton>
-    // </React.Fragment>
     <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
       <Alert onClose={handleClose} severity="error" sx={{ width: "100%" }}>
         You provided the wrong login credentials!!
@@ -88,51 +84,52 @@ export default function SignInSide() {
     });
     setLoading(true);
     axios
-      .post("http://localhost:3000/api/v1/Auth/login", {
-        password: data.get("password"),
-
-        email: data.get("email"),
+      .post("http://localhost:3000/api/v1/group/update/wallet", {
+        id: "6300af4d041fe5be8bfb07e8",
+        amount: 20000,
+      })
+      .then((res) => {})
+      .catch((err) => console.log(err));
+    axios
+      .post("https://msaadaproject.herokuapp.com/api/pay", {
+        amount: data.get("amount"),
+        id: 1,
+        phone: data.get("phone"),
       })
       .then((res) => {
         setLoading(false);
         console.log(res.data);
-        if (res.data.responseStatusCode == "401") {
-          setOpen(true);
+        if (
+          res.data.data.message ==
+          "Request accepted from safaricom, pin prompt sent successfully"
+        ) {
+          //   setOpen(true);
+          let amountparam = data.get("amount");
+          // updatedb(amountparam);
+
+          swal(
+            "Deposit Request Successful!",
+            "We have successfully initiated an mpesa wallet deposit to your phone, Kindly check for a pin prompt from safaricom and input your MPESA pin to continue",
+            "success"
+          );
         } else {
-          navigate("/dashboard", {user:res.data.data[0].email});
+          swal(
+            "Deposit Request failed!",
+            "We encountered an error while trying to make your reqest. Try again later!",
+            "error"
+          );
         }
       })
       .catch((err) => {
         setLoading(false);
         console.log(err);
+        swal(
+          "Deposit Request failed!",
+          "We encountered an error while trying to make your reqest. Try again later!",
+          "error"
+        );
       });
   };
-
-  // if (loading) {
-  //   return (
-  //     <div
-  //       style={{
-  //         height: "100vh",
-  //         width: "100vw",
-  //         justifyContent: "center",
-  //         alignItems: "center",
-  //       }}
-  //     >
-  //       <img
-  //         src={logo}
-  //         style={{
-  //           height: 100,
-  //           justifySelf: "center",
-  //           alignSelf: "center",
-  //           marginTop: 200,
-  //           width: 100,
-  //         }}
-  //         alt="loading..."
-  //       />
-  //       <h2 style={{ color: "blue" }}>We are verifying your credentials...</h2>
-  //     </div>
-  //   );
-  // }
 
   return (
     <ThemeProvider theme={theme}>
@@ -145,7 +142,7 @@ export default function SignInSide() {
           md={7}
           sx={{
             backgroundImage:
-              "url(https://images.unsplash.com/photo-1509099342178-e323b1717dba?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=872&q=80)",
+              "url(https://images.unsplash.com/photo-1607863680198-23d4b2565df0?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80)",
             backgroundRepeat: "no-repeat",
             backgroundColor: (t) =>
               t.palette.mode === "light"
@@ -171,8 +168,8 @@ export default function SignInSide() {
             <Typography component="h1" variant="h5">
               CHAMACHETU FOUNDATION
             </Typography>
-            <Typography component="h1" variant="h5">
-              Sign in
+            <Typography>
+              Initiate an Mpesa Deposit to your ChamaChetu Wallet
             </Typography>
             <Box
               component="form"
@@ -184,33 +181,33 @@ export default function SignInSide() {
                 margin="normal"
                 required
                 fullWidth
-                id="email"
-                label="Email Address"
-                name="email"
-                autoComplete="email"
+                id="phone"
+                label="Enter Mpesa Number (254722753364)"
+                name="phone"
+                autoComplete="phone"
                 autoFocus
               />
               <TextField
                 margin="normal"
                 required
                 fullWidth
-                name="password"
-                label="Password"
-                type="password"
-                id="password"
-                autoComplete="current-password"
+                type="number"
+                id="amount"
+                label="Enter Amount"
+                name="amount"
+                autoComplete="amount"
+                autoFocus
               />
-              <FormControlLabel
-                control={<Checkbox value="remember" color="primary" />}
-                label="Remember me"
-              />
+
               <Button
                 type="submit"
                 fullWidth
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
               >
-                {loading ? "Signing you in please wait..." : "sign in"}
+                {loading
+                  ? "Please wait, Initiating Deposits..."
+                  : "Make Deposit"}
               </Button>
               <Snackbar
                 open={open}
@@ -219,18 +216,7 @@ export default function SignInSide() {
                 message="Note archived"
                 action={action}
               />
-              <Grid container>
-                <Grid item xs>
-                  <Link href="#" variant="body2">
-                    Forgot password?
-                  </Link>
-                </Grid>
-                <Grid item>
-                  <Link href="/signup" variant="body2">
-                    {"Don't have an account? Sign Up"}
-                  </Link>
-                </Grid>
-              </Grid>
+
               <Copyright sx={{ mt: 5 }} />
             </Box>
           </Box>

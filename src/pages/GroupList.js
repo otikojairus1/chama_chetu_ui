@@ -21,6 +21,7 @@ export default function GroupList() {
   let navigate = useNavigate();
 
   React.useEffect(() => {
+    setLoading(true);
     axios
       .get("http://localhost:3000/api/v1/group/get/groups")
       .then((response) => {
@@ -28,6 +29,9 @@ export default function GroupList() {
         dataArray = response.data.data;
         console.log(dataArray);
         setData(dataArray);
+        setTimeout(() => {
+          setLoading(false);
+        }, 2000);
       });
   }, []);
   const override = {
@@ -110,9 +114,9 @@ export default function GroupList() {
                         "Group joining request was successfully received. We will review that and respond immediately",
                         "success"
                       );
-                      setTimeout(()=>{
+                      setTimeout(() => {
                         setLoading(false);
-                      }, 2000)
+                      }, 2000);
                     })
                     .catch((err) => {
                       console.log(err);
@@ -142,7 +146,9 @@ export default function GroupList() {
               </div>
               <div
                 onClick={() => {
-                  navigate("/group/members");
+                  navigate("/group/members", {
+                    state: { groupname: groupDetails.groupName },
+                  });
                 }}
                 style={{
                   height: 50,

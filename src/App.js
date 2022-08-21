@@ -16,6 +16,7 @@ import Sign_up from "./pages/signup";
 import GroupList from "./pages/GroupList";
 import GroupRequests from "./pages/GroupRequests";
 import GroupMembers from "./pages/GroupMembers";
+import Mpesa from "./pages/Mpesa";
 
 
 function App() {
@@ -29,12 +30,7 @@ function App() {
         <Route path="/grouplist" element={<GroupList />} />
         <Route path="/group/requests" element={<GroupRequests />} />
         <Route path="/group/members" element={<GroupMembers />} />
-
-
-
-        
-
-        
+        <Route path="/deposit" element={<Mpesa />} />
 
       </Routes>
     </BrowserRouter>
