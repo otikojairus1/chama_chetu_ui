@@ -17,12 +17,14 @@ import GroupList from "./pages/GroupList";
 import GroupRequests from "./pages/GroupRequests";
 import GroupMembers from "./pages/GroupMembers";
 import Mpesa from "./pages/Mpesa";
+import MyGroup from "./pages/MyGroup";
 
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
+        
         <Route path="/login" element={<SignInSide />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/signup" element={<Sign_up />} />
@@ -31,6 +33,8 @@ function App() {
         <Route path="/group/requests" element={<GroupRequests />} />
         <Route path="/group/members" element={<GroupMembers />} />
         <Route path="/deposit" element={<Mpesa />} />
+        <Route path="/mygroup" element={<MyGroup />} />
+
 
       </Routes>
     </BrowserRouter>

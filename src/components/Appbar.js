@@ -12,15 +12,16 @@ import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const pages = ["GroupList", "Pricing", "Blog"];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
-const AppBarComponent = () => {
+const AppBarComponent = ({email}) => {
+let navigate = useNavigate();
+
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
-
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
@@ -121,7 +122,11 @@ const AppBarComponent = () => {
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             <MenuItem key={"1"} onClick={handleCloseNavMenu}>
-              <Link to="/grouplist" style={{ textDecoration: 'none', color:"#fff" }}>
+              <Link to={{
+                    pathname: "/grouplist",
+
+                    state: { emailid: email },
+                  }} style={{ textDecoration: 'none', color:"#fff" }}>
                 <Typography textAlign="center">GroupList</Typography>
               </Link>
            
@@ -157,7 +162,8 @@ const AppBarComponent = () => {
             >
               {settings.map((setting) => (
                 <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
+                  {setting == "Logout"?<Typography onClick={()=>navigate('/login')} textAlign="center">{setting}</Typography>:<Typography textAlign="center">{setting}</Typography>}
+                  
                 </MenuItem>
               ))}
             </Menu>

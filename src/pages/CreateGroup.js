@@ -114,7 +114,7 @@ export default function CreateGroup() {
           setOpen(true);
         } else {
           swal("Group Creation Success!", "A group/chama with the provided details is created successfully and now available to start receiving join requests", "success");
-          navigate("/dashboard");
+          // navigate("/dashboard");
           // setTimeout(()=>{
           // navigate("/dashboard");
 

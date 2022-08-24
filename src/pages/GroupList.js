@@ -12,15 +12,18 @@ import AppBarComponent from "../components/Appbar";
 import { ClipLoader, GridLoader } from "react-spinners";
 import axios from "axios";
 import swal from "sweetalert";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 export default function GroupList() {
   let dataArray = [];
   const [loading, setLoading] = React.useState(false);
   const [data, setData] = React.useState([]);
   let navigate = useNavigate();
+  let location = useLocation();
+
 
   React.useEffect(() => {
+    console.log(location.state.email)
     setLoading(true);
     axios
       .get("http://localhost:3000/api/v1/group/get/groups")
@@ -102,7 +105,7 @@ export default function GroupList() {
                     .post(
                       "http://localhost:3000/api/v1/group/membership/request",
                       {
-                        user_email: "otikojairus@yahoo.com",
+                        user_email:location.state.email,
                         groupName: groupDetails.groupName,
                       }
                     )

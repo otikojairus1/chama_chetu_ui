@@ -11,21 +11,54 @@ import CardContent from "@mui/material/CardContent";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import GroupsIcon from "@mui/icons-material/Groups";
-import { Link, useLocation } from "react-router-dom";
-import ExpandLessIcon from '@mui/icons-material/ExpandLess';
-export default function Dashboard() {
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import ExpandLessIcon from "@mui/icons-material/ExpandLess";
+import axios from "axios";
+export default function Dashboard({ navigation }) {
   let location = useLocation();
+  let navigate = useNavigate();
+
+  const [balance, setBalance] = React.useState(0);
+  const [email, setEmail] = React.useState("otikojairus@yahoo.com");
+  const [groupName, setGroupName] = React.useState("");
+  const [groupNameAvailable, setGroupNameAvailability] = React.useState(false);
+  const [sessionNo, setSessionNo] = React.useState("");
+
+  React.useEffect(() => {
+    console.log(location.state.username);
+    axios
+      .post("http://localhost:3000/api/v1/group/get/group", {
+        email: location.state.email,
+      })
+      .then((res) => {
+        setGroupName(res.data.data.groupName);
+        console.log(groupName);
+        setGroupNameAvailability(true);
+        setSessionNo(res.data.data.sessionNo);
+      })
+      .catch((err) => console.log(err));
+    // console.log(location.state.email);
+    if (location.state !== null) {
+      setBalance(location.state.user);
+    } else {
+      setBalance(0);
+    }
+
+    // if (location.state.email !== null) {
+    //   setEmail(location.state.email);
+    // }
+  });
   return (
     <>
-      <AppBarComponent />
+      <AppBarComponent navigation={navigation} email={location.state.email} />
       <Container maxWidth="lg">
-        Welcome Jane Doe,
+        Welcome {location.state.username},
         <Grid container spacing={2}>
           <Grid item xs={3}>
             <Card sx={{ Width: 200 }}>
               <CardContent>
                 <h3>WALLET BALANCE</h3>
-                <h1>Kshs 0.00</h1>
+                <h1>Kshs {balance}.00</h1>
               </CardContent>
               <CardActions>
                 <Link
@@ -36,15 +69,15 @@ export default function Dashboard() {
                     width: 100,
                     backgroundColor: "green",
                     color: "#fff",
-                    textDecoration:"none",
-                    paddingLeft:20,
-                    paddingBottom:10,
+                    textDecoration: "none",
+                    paddingLeft: 20,
+                    paddingBottom: 10,
                     borderRadius: 20,
                   }}
                   to="/deposit"
                 >
                   <p>Deposit</p>
-                  <ExpandLessIcon/>
+                  <ExpandLessIcon />
                 </Link>
                 <Link
                   style={{
@@ -54,9 +87,9 @@ export default function Dashboard() {
                     width: 100,
                     backgroundColor: "red",
                     color: "#fff",
-                    textDecoration:"none",
-                    paddingLeft:20,
-                    paddingBottom:10,
+                    textDecoration: "none",
+                    paddingLeft: 20,
+                    paddingBottom: 10,
                     borderRadius: 20,
                   }}
                   to="/create/group"
@@ -86,11 +119,11 @@ export default function Dashboard() {
           <Grid item xs={3}>
             <Card sx={{ Width: 200 }}>
               <CardContent>
-                <h3>NEXT UP</h3>
-                Make a contribution to the next member.
+                <h3>MANAGE MEMBERSHIP REQUESTS</h3>
+               View members who need to join different groups and approve their requests
               </CardContent>
               <CardActions>
-                <Link to="/create/group">
+                <Link to="/group/requests">
                   <Button size="small">View Details</Button>
                 </Link>
               </CardActions>
@@ -101,13 +134,36 @@ export default function Dashboard() {
           <Grid item xs={3}>
             <Card sx={{ Width: 200 }}>
               <CardContent>
-                <h3>MY GROUP</h3>
-                Check all group details
+                <div>
+                  {groupNameAvailable ? (
+                    <h3>{groupName}</h3>
+                  ) : (
+                    <h3>MY GROUP (NO GROUP FOUND)</h3>
+                  )}
+                </div>
+                You are member number: {sessionNo} <br />
+                This is a number assigned to you by the group admin. It is a
+                session that tracks your contribution statuses.
               </CardContent>
               <CardActions>
-                <Link to="/create/group">
-                  <Button size="small">View Details</Button>
-                </Link>
+                {/* <Link
+                  to={{
+                    pathname: "/mygroup",
+
+                    state: {
+                      name: true,
+                    },
+                  }}
+                > */}
+                <Button
+                  // onClick={() => {
+                  //   navigate("/mygroup", { state: { group: groupName } });
+                  // }}
+                  size="small"
+                >
+                  View Details
+                </Button>
+                {/* </Link> */}
               </CardActions>
             </Card>
             {/* CARD LIST */}
@@ -136,9 +192,18 @@ export default function Dashboard() {
                 group prior to joining if you want.
               </CardContent>
               <CardActions>
-                <Link to="/grouplist">
-                  <Button size="small">Join a new group</Button>
-                </Link>
+                {/* <Link to="/grouplist"> */}
+                <Button
+                  onClick={() => {
+                    navigate("/grouplist", {
+                      state: { email: location.state.email },
+                    });
+                  }}
+                  size="small"
+                >
+                  Join a new group
+                </Button>
+                {/* </Link> */}
               </CardActions>
             </Card>
             {/* CARD LIST */}

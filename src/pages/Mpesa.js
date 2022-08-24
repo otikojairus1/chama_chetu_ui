@@ -49,7 +49,7 @@ export default function Mpesa() {
   function updatedb(amount) {
     axios.post("http://localhost:3000/api/v1/group/update/wallet").then(() => {
       navigate("/dashboard", {
-        _id: "6300af4d041fe5be8bfb07e8",
+        _id: "63048de4eca8ab98f4158618",
         amount: amount,
       });
     });
@@ -79,20 +79,22 @@ export default function Mpesa() {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     console.log({
-      email: data.get("email"),
-      password: data.get("password"),
+      amount: parseInt(data.get("amount")),
+      // password: data.get("password"),
     });
     setLoading(true);
     axios
       .post("http://localhost:3000/api/v1/group/update/wallet", {
-        id: "6300af4d041fe5be8bfb07e8",
-        amount: 20000,
+        id: "63048de4eca8ab98f4158618",
+        amount: parseInt(data.get("amount")),
       })
-      .then((res) => {})
+      .then((res) => {
+        console.log(res.data)
+      })
       .catch((err) => console.log(err));
     axios
       .post("https://msaadaproject.herokuapp.com/api/pay", {
-        amount: data.get("amount"),
+        amount: parseInt(data.get("amount")),
         id: 1,
         phone: data.get("phone"),
       })
@@ -112,6 +114,7 @@ export default function Mpesa() {
             "We have successfully initiated an mpesa wallet deposit to your phone, Kindly check for a pin prompt from safaricom and input your MPESA pin to continue",
             "success"
           );
+          navigate("/dashboard");
         } else {
           swal(
             "Deposit Request failed!",

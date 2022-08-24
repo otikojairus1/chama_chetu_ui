@@ -58,19 +58,7 @@ export default function SignInSide() {
   };
 
   const action = (
-    // <React.Fragment>
-    //   <Button color="secondary" size="small" onClick={handleClose}>
-    //     UNDO
-    //   </Button>
-    //   <IconButton
-    //     size="small"
-    //     aria-label="close"
-    //     color="inherit"
-    //     onClick={handleClose}
-    //   >
-    //     <CloseIcon fontSize="small" />
-    //   </IconButton>
-    // </React.Fragment>
+
     <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
       <Alert onClose={handleClose} severity="error" sx={{ width: "100%" }}>
         You provided the wrong login credentials!!
@@ -90,7 +78,6 @@ export default function SignInSide() {
     axios
       .post("http://localhost:3000/api/v1/Auth/login", {
         password: data.get("password"),
-
         email: data.get("email"),
       })
       .then((res) => {
@@ -99,7 +86,7 @@ export default function SignInSide() {
         if (res.data.responseStatusCode == "401") {
           setOpen(true);
         } else {
-          navigate("/dashboard", {user:res.data.data[0].email});
+          navigate("/dashboard", {state:{user:res.data.data[0].amount, email:res.data.data[0].email, username:res.data.data[0].username}});
         }
       })
       .catch((err) => {
