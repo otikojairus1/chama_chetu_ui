@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { Link } from "react-scroll";
+import { Link } from "react-router-dom";
 // Components
 import Sidebar from "./Sidebar";
 import Backdrop from "../Elements/Backdrop";

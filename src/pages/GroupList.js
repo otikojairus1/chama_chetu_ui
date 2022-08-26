@@ -14,7 +14,7 @@ import axios from "axios";
 import swal from "sweetalert";
 import { useNavigate, useLocation } from "react-router-dom";
 import TopNavbar2 from "../components/Nav/TopNav2";
-import Footer from "../components/Sections/Footer"
+import Footer from "../components/Sections/Footer";
 
 export default function GroupList() {
   let dataArray = [];
@@ -23,9 +23,8 @@ export default function GroupList() {
   let navigate = useNavigate();
   let location = useLocation();
 
-
   React.useEffect(() => {
-    console.log(location.state.email)
+    console.log(location.state.email);
     setLoading(true);
     axios
       .get("http://localhost:3000/api/v1/group/get/groups")
@@ -48,7 +47,7 @@ export default function GroupList() {
   if (loading) {
     return (
       <div>
-             <TopNavbar2/>
+        <TopNavbar2 />
 
         <div
           style={{
@@ -67,21 +66,19 @@ export default function GroupList() {
           <div style={{ marginLeft: 450, fontSize: 25 }}>
             Please wait as we fetch the latest groups
           </div>
-          <div style={{height:170}}></div>
+          <div style={{ height: 170 }}></div>
         </div>
-      <Footer />
-
+        <Footer />
       </div>
     );
   }
   return (
-    <div  style={{ backgroundColor: "#E2E2E2" }}>
-            <TopNavbar2/>
-
+    <div style={{ backgroundColor: "#E2E2E2" }}>
+      <TopNavbar2 />
 
       <Container maxWidth="sm">
         <div style={{ fontSize: 30, marginLeft: "auto" }}>Top Group</div>
-<div style={{height:40}}></div>
+        <div style={{ height: 40 }}></div>
         {data.map((groupDetails) => {
           return (
             <div
@@ -96,12 +93,20 @@ export default function GroupList() {
                 backgroundColor: "#101871",
               }}
             >
-              <div style={{color:"#fff", fontSize: 25 }}>{groupDetails.groupName}</div>
-              <div style={{color:"#fff"}}>{groupDetails.groupDescription}</div>
+              <div style={{ color: "#fff", fontSize: 25 }}>
+                {groupDetails.groupName}
+              </div>
+              <div style={{ color: "#fff" }}>
+                {groupDetails.groupDescription}
+              </div>
 
-              <div style={{color:"#fff"}}>GROUP REG NO. {groupDetails._id}</div>
-              <div style={{color:"#fff"}}>GROUP ADMIN: {groupDetails.Admin}</div>
-              <div style={{color:"#fff"}}>
+              <div style={{ color: "#fff" }}>
+                GROUP REG NO. {groupDetails._id}
+              </div>
+              <div style={{ color: "#fff" }}>
+                GROUP ADMIN: {groupDetails.Admin}
+              </div>
+              <div style={{ color: "#fff" }}>
                 GROUP INITIALIZED AT: {groupDetails.createdAt}
               </div>
 
@@ -112,7 +117,7 @@ export default function GroupList() {
                     .post(
                       "http://localhost:3000/api/v1/group/membership/request",
                       {
-                        user_email:location.state.email,
+                        user_email: location.state.email,
                         groupName: groupDetails.groupName,
                       }
                     )
@@ -145,13 +150,13 @@ export default function GroupList() {
                   // borderBottomLeftRadius: 10,
                   width: 100,
                   position: "absolute",
-                  paddingBottom:10,
+                  paddingBottom: 10,
                   right: 0,
                   bottom: 0,
-                  borderRadius:10,
-                  marginRight:10,
+                  borderRadius: 10,
+                  marginRight: 10,
 
-                  marginBottom:10,
+                  marginBottom: 10,
                   backgroundColor: "#50DEC2",
                 }}
               >
@@ -173,11 +178,11 @@ export default function GroupList() {
                   // borderBottomLeftRadius: 10,
                   width: 120,
                   position: "absolute",
-                  marginBottom:10,
+                  marginBottom: 10,
 
                   right: 120,
                   bottom: 0,
-                  borderRadius:10,
+                  borderRadius: 10,
                   backgroundColor: "#C59D4E",
                 }}
               >
@@ -189,7 +194,7 @@ export default function GroupList() {
           );
         })}
       </Container>
-      <div style={{height:40}}></div>
+      <div style={{ height: 40 }}></div>
       <Footer />
     </div>
   );

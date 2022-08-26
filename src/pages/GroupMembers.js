@@ -6,6 +6,11 @@ import { ClipLoader, GridLoader } from "react-spinners";
 import axios from "axios";
 import swal from "sweetalert";
 import { useLocation } from "react-router-dom";
+import TopNavbar2 from "../components/Nav/TopNav2";
+import Footer from "../components/Sections/Footer";
+// import UserCards from "../components/UserCard";
+import UserCard from "../components/UserCard";
+
 
 export default function GroupMembers() {
   const location = useLocation();
@@ -15,12 +20,14 @@ export default function GroupMembers() {
   let dataArray = [];
 
   React.useEffect(() => {
+    setLoading(true);
     console.log(location.state.groupname);
     axios
       .post("http://localhost:3000/api/v1/group/get/members", {
         groupName: location.state.groupname,
       })
       .then((response) => {
+        setLoading(false);
         if (response.data.responseStatusCode == 401) {
           swal(
             "No member found!",
@@ -44,77 +51,54 @@ export default function GroupMembers() {
   if (loading) {
     return (
       <div>
-        <AppBarComponent />
-        <div
-          style={{
-            flex: 1,
-            marginTop: 250,
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <GridLoader
-            color={"blue"}
-            loading={true}
-            cssOverride={override}
-            size={30}
-          />
-          <div style={{ marginLeft: 420, fontSize: 25 }}>
-            Please wait as we fetch the latest groups
-          </div>
+      <TopNavbar2 />
+
+      <div
+        style={{
+          flex: 1,
+          marginTop: 250,
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <GridLoader
+          color={"#101871"}
+          loading={true}
+          cssOverride={override}
+          size={20}
+        />
+        <div style={{ marginLeft: 450, fontSize: 25 }}>
+          Please wait as we get the active group members
         </div>
+        <div style={{ height: 170 }}></div>
       </div>
+      <Footer />
+    </div>
     );
   }
   return (
-    <div>
-      <AppBarComponent />
+    <div  style={{ backgroundColor: "#E2E2E2" }}>
+           <TopNavbar2 />
+           <div style={{height:40}}></div>
+
       <Container maxWidth="sm">
         <p>Group Members</p>
 
         {data.map((member) => {
           return (
-            <div
-              style={{
-                marginTop: 10,
-                height: 130,
-                padding: 10,
-                position: "relative",
-                // display: "flex",
-                borderRadius: 10,
-                backgroundColor: "#EEF0EE",
-              }}
-            >
-              <div style={{ display: "flex" }}>
-                <div>
-                  <img style={{ height: 100, width: 100 }} src={dp} />
-                </div>
-                <p style={{ fontSize: 25, marginLeft: 20, fontWeight: "bold" }}>
-                  {member.memberEmail}
-                </p>
-              </div>
-
-              <p style={{ margin: "auto" }}>{member.memberEmail}</p>
-              <div
-                style={{
-                  height: 40,
-                  position: "absolute",
-                  bottom: 0,
-                  right: 0,
-                  width: 100,
-                  justifyContent: "center",
-                  alignItems: "center",
-                  pointer: "cursor",
-                  backgroundColor: "green",
-                }}
-              >
-                {" "}
-                <p style={{ color: "#fff" }}>Contribute</p>
-              </div>
-            </div>
+            <UserCard
+            contact={{
+              name: "User Name",
+              imgUrl: "http://source.unsplash.com/random/200x200/?portrait",
+              phone: "(212) 555-1234",
+              mail: "user@user.com"
+            }}
+          />
           );
         })}
       </Container>
+      <div style={{ height: 40 }}></div>
+      <Footer />
     </div>
   );
 }
