@@ -12,6 +12,10 @@ import AppBarComponent from "../components/Appbar";
 import { ClipLoader, GridLoader } from "react-spinners";
 import axios from "axios";
 import swal from "sweetalert";
+import TopNavbar2 from "../components/Nav/TopNav2";
+import Footer from "../components/Sections/Footer";
+
+
 
 export default function GroupRequests() {
   let dataArray = [];
@@ -47,7 +51,8 @@ if(data.length == 0){
   if (loading) {
     return (
       <div>
-        <AppBarComponent />
+      <TopNavbar2/>
+       
         <div
           style={{
             flex: 1,
@@ -71,8 +76,9 @@ if(data.length == 0){
   }
   return (
     <>
-      <AppBarComponent />
+           <TopNavbar2/>
 
+<div style={{height:40}}></div>
       <Container maxWidth="sm">
         <div style={{ fontSize: 30, marginLeft: "auto" }}>Group Requests</div>
 
@@ -83,13 +89,13 @@ if(data.length == 0){
             <div
               // onClick={() => console.log("working")}
               style={{
-                height: 100,
+                height: 130,
                 pointer: "cursor",
                 marginTop: 7,
                 borderRadius: 10,
                 padding: 10,
                 position: "relative",
-                backgroundColor: "#D7DED7",
+                backgroundColor: "#DCB608",
               }}
             >
               <div style={{}}>{groupDetails.groupName}</div>
@@ -149,6 +155,7 @@ if(data.length == 0){
           );
         })}
       </Container>
+      <Footer/>
     </>
   );
 }

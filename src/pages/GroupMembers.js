@@ -5,7 +5,7 @@ import dp from "../Assets/dpp.png";
 import { ClipLoader, GridLoader } from "react-spinners";
 import axios from "axios";
 import swal from "sweetalert";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import TopNavbar2 from "../components/Nav/TopNav2";
 import Footer from "../components/Sections/Footer";
 // import UserCards from "../components/UserCard";
@@ -14,6 +14,8 @@ import UserCard from "../components/UserCard";
 
 export default function GroupMembers() {
   const location = useLocation();
+  let navigate = useNavigate();
+
 
   const [loading, setLoading] = React.useState(false);
   const [data, setData] = React.useState([]);
@@ -82,18 +84,75 @@ export default function GroupMembers() {
            <div style={{height:40}}></div>
 
       <Container maxWidth="sm">
-        <p>Group Members</p>
+        <div style={{height:50}}></div>
+        <p style={{fontSize:20}}>Group Members</p>
 
         {data.map((member) => {
           return (
-            <UserCard
-            contact={{
-              name: "User Name",
-              imgUrl: "http://source.unsplash.com/random/200x200/?portrait",
-              phone: "(212) 555-1234",
-              mail: "user@user.com"
+          //   <UserCard
+            
+          //   contact={{
+          //     name: "ChamaUserName",
+          //     imgUrl: "http://source.unsplash.com/random/200x200/?portrait",
+          //     phone: "(212) 555-1234",
+          //     mail: member.memberEmail,
+          //     navigate:navigate2
+          //   }}
+          // />
+
+
+
+
+          <section
+          style={{
+            backgroundColor: "#DCB608",
+            padding: 15,
+            position: "relative",
+            borderRadius: 10,
+            elevation: 1,
+            marginTop: 10,
+          }}
+          className="user-card"
+        >
+          <div style={{ display: "flex" }}>
+            <img
+              style={{
+                borderRadius: "50%",
+                height: 90,
+                width: 90,
+                marginLeft: 10,
+                marginRight: 10,
+              }}
+              src={"http://source.unsplash.com/random/200x200/?portrait"}
+              alt="portrait"
+            />
+            <div>
+              <h2>Jane Doe</h2>
+              <p>Phone: +254726372286</p>
+              <p>E-Mail: {member.memberEmail}</p>
+            </div>
+          </div>
+          <div
+         onClick={()=>navigate('/contribute/groupmember')}
+            
+            style={{
+              position: "absolute",
+              backgroundColor: "green",
+              paddingBottom: 5,
+              borderRadius: 10,
+              paddingTop: 5,
+              paddingleft: 10,
+              padddingRight: 10,
+              cursor: "pointer",
+              top: 10,
+              right: 10,
             }}
-          />
+          >
+            <p style={{ color: "#fff" }}>Contribute</p>
+          </div>
+        </section>
+
+
           );
         })}
       </Container>

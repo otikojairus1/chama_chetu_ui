@@ -15,6 +15,7 @@ import MyGroup from "./pages/MyGroup";
 import Chat from "./pages/Chat";
 import Landing from "./pages/Landing";
 import { Helmet } from "react-helmet";
+import Contribute from "./pages/Contribute";
 
 function App() {
   return (
@@ -31,6 +32,8 @@ function App() {
         <Route path="/deposit" element={<Mpesa />} />
         <Route path="/mygroup" element={<MyGroup />} />
         <Route path="/chat" element={<Chat />} />
+        <Route path="/contribute/groupmember" element={<Contribute />} />
+
         <Route exact path="/" element={<Landing />} />
       </Routes>
     </BrowserRouter>

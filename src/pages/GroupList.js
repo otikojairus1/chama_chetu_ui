@@ -89,10 +89,13 @@ export default function GroupList() {
                 marginTop: 7,
                 borderRadius: 10,
                 padding: 10,
+                display:"flex",
                 position: "relative",
-                backgroundColor: "#101871",
+                backgroundColor: "#0A1DB9",
               }}
             >
+                 <img style={{borderRadius:"50%", height:90, width:90, marginLeft:10, marginRight:10}} src={"http://source.unsplash.com/random/200x200/"} alt="portrait" />
+              <div>
               <div style={{ color: "#fff", fontSize: 25 }}>
                 {groupDetails.groupName}
               </div>
@@ -108,6 +111,7 @@ export default function GroupList() {
               </div>
               <div style={{ color: "#fff" }}>
                 GROUP INITIALIZED AT: {groupDetails.createdAt}
+              </div>
               </div>
 
               <div
@@ -152,7 +156,7 @@ export default function GroupList() {
                   position: "absolute",
                   paddingBottom: 10,
                   right: 0,
-                  bottom: 0,
+                  top: 0,
                   borderRadius: 10,
                   marginRight: 10,
 
@@ -181,7 +185,7 @@ export default function GroupList() {
                   marginBottom: 10,
 
                   right: 120,
-                  bottom: 0,
+                  top: 0,
                   borderRadius: 10,
                   backgroundColor: "#C59D4E",
                 }}
