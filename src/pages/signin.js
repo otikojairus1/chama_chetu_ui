@@ -86,6 +86,8 @@ export default function SignInSide() {
         if (res.data.responseStatusCode == "401") {
           setOpen(true);
         } else {
+
+      localStorage.setItem('amount', JSON.stringify({amount:res.data.data[0].amount}));
           navigate("/dashboard", {state:{user:res.data.data[0].amount, email:res.data.data[0].email, username:res.data.data[0].username}});
         }
       })

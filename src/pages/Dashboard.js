@@ -16,28 +16,43 @@ import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import axios from "axios";
 import chatIcon from "../assets/chat.gif";
 import TopNavbar2 from "../components/Nav/TopNav2";
-import Footer from "../components/Sections/Footer"
-import AccountBalanceWalletTwoToneIcon from '@mui/icons-material/AccountBalanceWalletTwoTone';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import KeyboardDoubleArrowRightIcon from '@mui/icons-material/KeyboardDoubleArrowRight';
+import Footer from "../components/Sections/Footer";
+import AccountBalanceWalletTwoToneIcon from "@mui/icons-material/AccountBalanceWalletTwoTone";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import KeyboardDoubleArrowRightIcon from "@mui/icons-material/KeyboardDoubleArrowRight";
 
 export default function Dashboard({ navigation }) {
   let location = useLocation();
   let navigate = useNavigate();
 
-  const [balance, setBalance] = React.useState(0);
+  let [balance, setBalance] = React.useState(0);
   const [email, setEmail] = React.useState("otikojairus@yahoo.com");
   const [groupName, setGroupName] = React.useState("");
   const [groupNameAvailable, setGroupNameAvailability] = React.useState(false);
   const [sessionNo, setSessionNo] = React.useState("");
 
+  // let asyncbalance = JSON.parse(localStorage.getItem("amount"));
+  // if (location.state !== null) {
+  //   //balance =parseInt( asyncbalance.amount )- parseInt(location.state.amount) ;
+  //   balance = location.state.amount;
+  // }
+
+   let renderUsername = "";
+
+  // if (location.state !== undefined) {
+  //   if (location.state.username !== undefined) {
+  //     renderUsername = location.state.username;
+  //   }
+  // }
+
   React.useEffect(() => {
-    console.log(location.state.username);
+    // console.log(location.state.username, asyncbalance.amount);
     axios
       .post("http://localhost:3000/api/v1/group/get/group", {
         email: location.state.email,
       })
       .then((res) => {
+        renderUsername = 
         setGroupName(res.data.data.groupName);
         console.log(groupName);
         setGroupNameAvailability(true);
@@ -46,7 +61,12 @@ export default function Dashboard({ navigation }) {
       .catch((err) => console.log(err));
     // console.log(location.state.email);
     if (location.state !== null) {
+      // let items = {
+      //   balance: location.state.user,
+      // };
+
       setBalance(location.state.user);
+      // localStorage.setItem("items", JSON.stringify(items));
     } else {
       setBalance(0);
     }
@@ -58,13 +78,23 @@ export default function Dashboard({ navigation }) {
   return (
     <div style={{ backgroundColor: "#E2E2E2" }}>
       {/* <AppBarComponent navigation={navigation} email={location.state.email} /> */}
-      <TopNavbar2/>
+      <TopNavbar2 />
       <div style={{ height: 100 }}></div>
       <Container maxWidth="lg">
         <div style={{ display: "flex" }}>
           <p style={{ fontSize: 30 }}>Welcome Back </p>
-          <p style={{ color: "green", marginLeft:10, marginTop:4, fontSize: 25 }}>
-            {location.state.username},
+          <p
+            style={{
+              color: "green",
+              marginLeft: 10,
+              marginTop: 4,
+              fontSize: 25,
+            }}
+          >
+            {/* {location.state.username},
+             */}
+
+             {renderUsername}
           </p>
         </div>
         <Grid container spacing={2}>
@@ -72,7 +102,10 @@ export default function Dashboard({ navigation }) {
             <Card sx={{ Width: 200 }}>
               <CardContent>
                 <h3>MY WALLET</h3>
-                <AccountBalanceWalletTwoToneIcon color="#3C4D97" fontSize={"large"}/>
+                <AccountBalanceWalletTwoToneIcon
+                  color="#3C4D97"
+                  fontSize={"large"}
+                />
                 <h1>Kshs {balance}.00</h1>
               </CardContent>
               <CardActions>
@@ -86,14 +119,14 @@ export default function Dashboard({ navigation }) {
                     color: "#fff",
                     textDecoration: "none",
                     paddingLeft: 20,
-                    display:"flex",
-              
+                    display: "flex",
+
                     paddingBottom: 10,
                     borderRadius: 20,
                   }}
                   to="/deposit"
                 >
-                  <p style={{marginTop:10, marginLeft:-5}}>Deposit</p>
+                  <p style={{ marginTop: 10, marginLeft: -5 }}>Deposit</p>
                   <ExpandLessIcon />
                 </Link>
                 <Link
@@ -104,7 +137,7 @@ export default function Dashboard({ navigation }) {
                     width: 120,
                     backgroundColor: "red",
                     color: "#fff",
-                    display:"flex",
+                    display: "flex",
                     textDecoration: "none",
                     paddingLeft: 20,
                     paddingBottom: 10,
@@ -112,25 +145,30 @@ export default function Dashboard({ navigation }) {
                   }}
                   to="/create/group"
                 >
-                  <p style={{marginTop:8}}>Withdraw</p>
-                  <KeyboardArrowDownIcon/>
+                  <p style={{ marginTop: 8 }}>Withdraw</p>
+                  <KeyboardArrowDownIcon />
                 </Link>
               </CardActions>
             </Card>
             {/* CARD LIST */}
           </Grid>
           <Grid item xs={3}>
-            <Card sx={{ Width: 200 , backgroundColor:"#3C4D97"}}>
+            <Card sx={{ Width: 200, backgroundColor: "#3C4D97" }}>
               <CardContent>
-                <h3 style={{ color:"#fff"}}>GROUP CREATION</h3>
-                <p style={{ color:"#fff"}}>
-                As an admin you can create a group here, this group will then be
-                able to receive join requests from member who already have an
-                account with us.</p>
+                <h3 style={{ color: "#fff" }}>GROUP CREATION</h3>
+                <p style={{ color: "#fff" }}>
+                  As an admin you can create a group here, this group will then
+                  be able to receive join requests from member who already have
+                  an account with us.
+                </p>
               </CardContent>
               <CardActions>
                 <Link to="/create/group">
-                  <Button size="small"><p style={{ color:"#fff", fontWeight:"bold"}}>Get Started</p></Button>
+                  <Button size="small">
+                    <p style={{ color: "#fff", fontWeight: "bold" }}>
+                      Get Started
+                    </p>
+                  </Button>
 
                   <KeyboardDoubleArrowRightIcon sx={{ color: "#fff" }} />
                 </Link>
@@ -155,18 +193,20 @@ export default function Dashboard({ navigation }) {
           </Grid>
 
           <Grid item xs={3}>
-            <Card sx={{ Width: 200, backgroundColor:"#3C4D97" }}>
+            <Card sx={{ Width: 200, backgroundColor: "#3C4D97" }}>
               <CardContent>
                 <div>
                   {groupNameAvailable ? (
-                    <h3 style={{ color:"#fff"}}>{groupName}</h3>
+                    <h3 style={{ color: "#fff" }}>{groupName}</h3>
                   ) : (
                     <h3>MY GROUP (NO GROUP FOUND)</h3>
                   )}
                 </div>
-                <p style={{ color:"#fff"}}>You are member number: {sessionNo} <br />
-                This is a number assigned to you by the group admin. It is a
-                session that tracks your contribution statuses.</p>
+                <p style={{ color: "#fff" }}>
+                  You are member number: {sessionNo} <br />
+                  This is a number assigned to you by the group admin. It is a
+                  session that tracks your contribution statuses.
+                </p>
               </CardContent>
               <CardActions>
                 {/* <Link
@@ -184,7 +224,7 @@ export default function Dashboard({ navigation }) {
                   }}
                   size="small"
                 >
-                  <p style={{ color:"#fff"}}>Send Contribution</p>
+                  <p style={{ color: "#fff" }}>Send Contribution</p>
                 </Button>
                 {/* </Link> */}
               </CardActions>
@@ -223,10 +263,11 @@ export default function Dashboard({ navigation }) {
             <Card sx={{ Width: 200 }}>
               <CardContent>
                 <h3>JOIN A GROUP</h3>
-                <p >
-                Join any group of your choice from a list of verified groups
-                created by the admin. You may also check the members in the
-                group prior to joining if you want.</p>
+                <p>
+                  Join any group of your choice from a list of verified groups
+                  created by the admin. You may also check the members in the
+                  group prior to joining if you want.
+                </p>
               </CardContent>
               <CardActions>
                 {/* <Link to="/grouplist"> */}
@@ -246,10 +287,10 @@ export default function Dashboard({ navigation }) {
             {/* CARD LIST */}
           </Grid>
           <Grid item xs={3}>
-            <Card sx={{ Width: 200, backgroundColor:"#3C4D97" }}>
+            <Card sx={{ Width: 200, backgroundColor: "#3C4D97" }}>
               <CardContent>
-                <h3 style={{ color:"#fff"}}>LOANS</h3>
-                <p style={{ color:"#fff"}}>
+                <h3 style={{ color: "#fff" }}>LOANS</h3>
+                <p style={{ color: "#fff" }}>
                   Get soft loans as per your shares. we will calculate interest
                   rates at a 5% rate. feel free and start enjoying loan services
                   by chamachetu{" "}
@@ -257,7 +298,9 @@ export default function Dashboard({ navigation }) {
               </CardContent>
               <CardActions>
                 <Link to="/grouplist">
-                  <Button size="small"><p style={{ color:"#fff"}}>Get started</p></Button>
+                  <Button size="small">
+                    <p style={{ color: "#fff" }}>Get started</p>
+                  </Button>
                 </Link>
               </CardActions>
             </Card>
@@ -300,7 +343,7 @@ export default function Dashboard({ navigation }) {
           </Grid>
         </Grid>
       </Container>
-      <div style={{height:40}}></div>
+      <div style={{ height: 40 }}></div>
       <Footer />
     </div>
   );

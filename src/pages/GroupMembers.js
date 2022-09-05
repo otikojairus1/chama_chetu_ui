@@ -89,21 +89,7 @@ export default function GroupMembers() {
 
         {data.map((member) => {
           return (
-          //   <UserCard
-            
-          //   contact={{
-          //     name: "ChamaUserName",
-          //     imgUrl: "http://source.unsplash.com/random/200x200/?portrait",
-          //     phone: "(212) 555-1234",
-          //     mail: member.memberEmail,
-          //     navigate:navigate2
-          //   }}
-          // />
-
-
-
-
-          <section
+           <section
           style={{
             backgroundColor: "#DCB608",
             padding: 15,
@@ -133,7 +119,7 @@ export default function GroupMembers() {
             </div>
           </div>
           <div
-         onClick={()=>navigate('/contribute/groupmember')}
+         onClick={()=>navigate('/contribute/groupmember',{state:{email:member.memberEmail}})}
             
             style={{
               position: "absolute",
