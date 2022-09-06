@@ -16,6 +16,8 @@ import Chat from "./pages/Chat";
 import Landing from "./pages/Landing";
 import { Helmet } from "react-helmet";
 import Contribute from "./pages/Contribute";
+import Shares from "./pages/Shares";
+import SharesForm from "./pages/SharesForm";
 
 function App() {
   return (
@@ -33,6 +35,10 @@ function App() {
         <Route path="/mygroup" element={<MyGroup />} />
         <Route path="/chat" element={<Chat />} />
         <Route path="/contribute/groupmember" element={<Contribute />} />
+        <Route path="/buy/shares" element={<Shares />} />
+        <Route path="/buy/shares/form" element={<SharesForm />} />
+
+
 
         <Route exact path="/" element={<Landing />} />
       </Routes>

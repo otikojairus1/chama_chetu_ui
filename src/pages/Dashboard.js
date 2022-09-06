@@ -316,7 +316,7 @@ export default function Dashboard({ navigation }) {
                 </p>
               </CardContent>
               <CardActions>
-                <Link to="/grouplist">
+                <Link to="/buy/shares">
                   <Button size="small">Get started</Button>
                 </Link>
               </CardActions>
